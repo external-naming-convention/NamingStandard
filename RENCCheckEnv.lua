@@ -611,6 +611,16 @@ end)
 
 test("setrbxclipboard", {})
 
+test("getplayer", {"getlocalplayer"}, function()
+	assert(getplayer() == game:GetService("Players").LocalPlayer, "Did not return the expected player (LocalPlayer)")
+	assert(not getplayer("1x1x1x1"), "Returned a non-existing player")
+end)
+
+test("getplayers", {}, function()
+	assert(getplayers()["LocalPlayer"] == game:GetService("Players").LocalPlayer, "Did not return the expected player (LocalPlayer)")
+	assert(not getplayers()["1x1x1x1"], "Returned a non-existing player")
+end)
+
 -- Metatable
 
 test("getrawmetatable", {}, function()

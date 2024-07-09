@@ -306,3 +306,48 @@ Set whether the given property is scriptable. Returns whether the property was s
  * `object` - The object to index.
  * `property` - The name of the property.
  * `value` - Whether the property should be scriptable.
+
+---
+
+## getplayer
+
+```lua
+function getplayer(name: string): instance
+```
+
+Gets player from name, or LocalPlayer if no name is provided.
+
+### Aliases   
+
+ * `getlocalplayer`   
+
+### Example
+
+```lua
+getplayer():Kick("Coolio was too cool")
+```
+
+---
+
+## getplayers
+
+```lua
+function getplayers(): table
+```
+
+Returns all players in current game.
+
+### Example
+
+```lua
+local playerToFind = "coolio"
+local playerAmount = 0
+for i, x in pairs(getplayers()) do 
+	playerAmount=playerAmount+1
+	if i == playerToFind then
+		print('"'..playerToFind.."\" was found with the DisplayName \""..x.DisplayName..'"')
+		getplayer():Kick("Admin \""..playerToFind.."\" was found in your server")
+	end
+end
+print("There are currently "..tostring(playerAmount).." players in your lobby.")
+```

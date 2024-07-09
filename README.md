@@ -41,7 +41,7 @@ _RENC Badge_
 
 _RENC Supported Badge_
 
-[![RENC Supported Badge(https://roblox.scriptenc.org/badge-supported.png)](https://roblox.scriptenc.org)
+[![RENC Supported Badge](https://roblox.scriptenc.org/badge-supported.png)](https://roblox.scriptenc.org)
 ```
 
 This will notify people of your alliance in providing scripters with an easier method of engineering scripts that your consumers can enjoy.
