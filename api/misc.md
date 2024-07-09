@@ -242,3 +242,30 @@ Sets the in-game FPS cap to `fps`. If `fps` is 0, the FPS cap is disabled.
 ```lua
 setfpscap(0) -- Unlocks the FPS cap
 ```
+
+---
+
+## customprint
+
+`🪲 Compatibility`
+
+```lua
+function customprint(text: string, properties: table, imageId: rbxasset): ()
+```
+
+Prints to the console with special options like setting the image, color & font.
+
+> ### 🪲 Known Issues
+> The console is in CoreGui only when open, this can cause problems if you dont fuck around in CoreScripts or whatever.
+
+### Parameters
+
+ * `text` - Text to print.
+ * `properties` - Properties for the TextLabel of the print.
+ * `imageId` - The Image property for the ImageLabel of the print.
+
+### Example
+
+```lua
+customprint("Successful", {TextColor3 = Color3.fromRGB(0, 255, 0)}, "rbxasset://textures/AudioDiscovery/done.png")
+```
