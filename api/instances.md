@@ -312,7 +312,7 @@ Set whether the given property is scriptable. Returns whether the property was s
 ## getplayer
 
 ```lua
-function getplayer(name: string): instance
+function getplayer(name: string): Instance
 ```
 
 Gets player from name, or LocalPlayer if no name is provided.
@@ -350,4 +350,36 @@ for i, x in pairs(getplayers()) do
 	end
 end
 print("There are currently "..tostring(playerAmount).." players in your lobby.")
+```
+
+---
+
+## runanimation
+
+```lua
+function runanimation(animationId, player: Instance): ()
+```
+
+Plays an animation on the chosen player.
+
+### Aliases   
+
+ * `playanimation`   
+
+### Example
+
+```lua
+local function e(dance: number)
+	local dances = {"507771019",507771955,"507772104"} -- You can use either strings or numbers.
+	return dances[number]
+end
+local function youShouldDanceYourselfNow()
+	runanimation(e(3))
+end
+local function danceTillYoureDead()
+	for _, x in pairs(getplayers()) do
+		runanimation(e(3), x)
+	end
+end
+danceTillYoureDead() -- Wowie, everyone be /e dance3ing
 ```

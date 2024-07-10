@@ -621,6 +621,8 @@ test("getplayers", {}, function()
 	assert(not getplayers()["1x1x1x1"], "Returned a non-existing player")
 end)
 
+test("runanimation", {"playanimation"})
+
 -- Metatable
 
 test("getrawmetatable", {}, function()
@@ -731,6 +733,10 @@ test("setfpscap", {}, function()
 end)
 
 test("customprint")
+
+test("getfps")
+
+test("getping")
 
 -- Scripts
 

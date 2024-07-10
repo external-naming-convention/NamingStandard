@@ -269,3 +269,51 @@ Prints to the console with special options like setting the image, color & font.
 ```lua
 customprint("Successful", {TextColor3 = Color3.fromRGB(0, 255, 0)}, "rbxasset://textures/AudioDiscovery/done.png")
 ```
+
+---
+
+## getfps
+
+```lua
+function getfps(suffix: boolean): string
+```
+
+Gets the current player's fps, and adds " fps" to the end if suffix is true.
+
+> ### 🔎 Note
+> The ping is rounded(math.round in Lua), so you won't get the exact fps.
+
+### Parameters
+
+ * `suffix` - Whether or not to add " fps" to the end.
+
+### Example
+
+```lua
+print(tostring(tonumber(getfps())*60).." fpm")
+print(getping(true))
+```
+
+---
+
+## getping
+
+```lua
+function getping(suffix: boolean): string
+```
+
+Gets the current player's ping, and adds " ms" to the end if suffix is true.
+
+> ### 🔎 Note
+> The ping is rounded(math.round in Lua), so you won't get the exact ping.
+
+### Parameters
+
+ * `suffix` - Whether or not to add " ms" to the end.
+
+### Example
+
+```lua
+print(tostring(tonumber(getping())/1000).."s ping")
+print(getping(true).." ping")
+```
