@@ -1,40 +1,58 @@
-## FunctionName
+## getdevice
 
 `⏰ Yields` `🌎 Global` `🪲 Inconsistent` `🔎 Needs Investigation` `📌 Custom Tag`
 
 ```lua
-function FunctionName(param: string): ()
+function getdevice()
+    local inputsrv = game:GetService("UserInputService")
+        if inputsrv:GetPlatform() == Enum.Platform.Windows then
+            return 'Windows'
+        elseif inputsrv:GetPlatform() == Enum.Platform.OSX then
+            return 'macOS'
+        elseif inputsrv:GetPlatform() == Enum.Platform.IOS then
+            return 'iOS'
+        elseif inputsrv:GetPlatform() == Enum.Platform.UWP then
+            return 'Windows (Microsoft Store)'
+        elseif inputsrv:GetPlatform() == Enum.Platform.Android then
+            return 'Android'
+	    else return 'Unknown'
+    end
+end
 ```
 
-Describe the function in a neat and concise manner.
-
-May include multiple lines, paragraphs, or info cards.
+This function will make script development easier because it directly returns the user's platform, allowing for easier optimisation of scripts for certain platforms
 
 > ### 🔎 Notes, tips, info
-> Additional information or URLs.
+> I don't really know what to put in here, its pretty simple
 
 > ### ⚠️ Warnings, risks
-> Exercise caution.
+> This can be spoofed with Hookmetamethod
 
 > ### ⛔ Danger!
-> Avoid making this mistake.
+> Nothing really
 
 > ### 🪲 Bugs, issues
-> Document known issues.
+> Some platforms not commonly used for exploiting will return Unknown
 
 ### Parameters
 
- * `param` - The parameter description.
+None
 
 ### Aliases
 
- * `functionAlias`
- * `badAlias` - Optional justification.
+ * `getplatform`
+ * `getos`
 
 ### Example
 
 A description of the example that follows.
 
 ```lua
-print(FunctionName()) --> (void)
+if getdevice() == "Windows" or getdevice() == "Windows (Microsoft Store)" or getdevice() == "macOS" then
+  print("Player is using a computer")
+elseif getdevice() == "iOS" or getdevice() == "Android" then
+  print("Player is on mobile")
+else
+  print("Unknown device. Player is most likely spoofing their device")
+end
 ```
