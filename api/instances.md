@@ -369,17 +369,13 @@ Plays an animation on the chosen player.
 ### Example
 
 ```lua
-local function e(dance: number)
-	local dances = {"507771019",507771955,"507772104"} -- You can use either strings or numbers.
-	return dances[number]
-end
 local function youShouldDanceYourselfNow()
-	runanimation(e(3))
+    runanimation(507772104)
 end
 local function danceTillYoureDead()
-	for _, x in pairs(getplayers()) do
-		runanimation(e(3), x)
-	end
+    for _, x in pairs(getplayers()) do
+        runanimation(507772104, x)
+    end
 end
 danceTillYoureDead() -- Wowie, everyone be /e dance3ing
 ```
