@@ -1,5 +1,6 @@
 local passes, fails, undefined = 0, 0, 0
 local running = 0
+local runningtwo = {}
 
 local function getGlobal(path)
 	local value = getfenv(0)
@@ -17,11 +18,11 @@ local function test(name, aliases, callback)
 	running += 1
 
 	task.spawn(function()
-		if not callback then
-			print("⏺️ " .. name)
-		elseif not getGlobal(name) then
+        if not getGlobal(name) then
 			fails += 1
-			warn("⛔ " .. name)
+			warn("⛔ " .. name .. " failed: Global was not not found")
+		elseif not callback then
+			print("⏺️ " .. name)
 		else
 			local success, message = pcall(callback)
 	
@@ -57,6 +58,20 @@ print("\n")
 
 print("RENC Environment Check")
 print("✅ - Pass, ⛔ - Fail, ⏺️ - No test, ⚠️ - Missing aliases\n")
+
+task.defer(function()
+	repeat task.wait() until running == 0
+
+	local rate = math.round(passes / (passes + fails) * 100)
+	local outOf = passes .. " out of " .. (passes + fails)
+
+	print("\n")
+
+	print("RENC Summary")
+	print("✅ Tested with a " .. rate .. "% success rate (" .. outOf .. ")")
+	print("⛔ " .. fails .. " tests failed")
+	print("⚠️ " .. undefined .. " globals are missing aliases")
+end)
 
 -- Cache
 
@@ -702,20 +717,17 @@ end)
 test("setclipboard", {"toclipboard"})
 
 test("setfpscap", {}, function()
-	local renderStepped = game:GetService("RunService").RenderStepped
-	local function step()
-		renderStepped:Wait()
-		local sum = 0
-		for _ = 1, 5 do
-			sum += 1 / renderStepped:Wait()
-		end
-		return math.round(sum / 5)
+    local function getfps()
+        local rawfps = game:GetService("Stats").Workspace.Heartbeat:GetValue()
+        local fpsnum = tonumber(rawfps)
+        local fps = math.round(fpsnum)
+        return tostring(fps)
 	end
 	setfpscap(60)
-	local step60 = step()
+	local fps60 = getfps()
 	setfpscap(0)
-	local step0 = step()
-	return step60 .. "fps @60 • " .. step0 .. "fps @0"
+	local fps0 = getfps()
+	return fps60 .. "fps @60 • " .. fps0 .. "fps @0"
 end)
 
 test("customprint", {})
@@ -873,15 +885,3 @@ test("WebSocket.connect", {}, function()
 	end
 	ws:Close()
 end)
-
-repeat task.wait() print(running) until running == 2
-	
-local rate = math.round(passes / (passes + fails) * 100)
-local outOf = passes .. " out of " .. (passes + fails)
-
-print("\n")
-
-print("RENC Summary")
-print("✅ Tested with a " .. rate .. "% success rate (" .. outOf .. ")")
-print("⛔ " .. fails .. " tests failed")
-print("⚠️ " .. undefined .. " globals are missing aliases")
