@@ -58,7 +58,7 @@ print("\n")
 print("RENC Environment Check")
 print("✅ - Pass, ⛔ - Fail, ⏺️ - No test, ⚠️ - Missing aliases\n")
 
-task.defer(function()
+local yes = function()
 	repeat task.wait() until running == 0
 
 	local rate = math.round(passes / (passes + fails) * 100)
@@ -70,7 +70,7 @@ task.defer(function()
 	print("✅ Tested with a " .. rate .. "% success rate (" .. outOf .. ")")
 	print("⛔ " .. fails .. " tests failed")
 	print("⚠️ " .. undefined .. " globals are missing aliases")
-end)
+end
 
 -- Cache
 
@@ -732,11 +732,11 @@ test("setfpscap", {}, function()
 	return step60 .. "fps @60 • " .. step0 .. "fps @0"
 end)
 
-test("customprint")
+test("customprint", {})
 
-test("getfps")
+test("getfps", {})
 
-test("getping")
+test("getping", {})
 
 -- Scripts
 
@@ -887,3 +887,4 @@ test("WebSocket.connect", {}, function()
 	end
 	ws:Close()
 end)
+yes()
