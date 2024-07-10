@@ -18,4 +18,4 @@
 * Functions don't always require an alias, you may just also put N/A in that field.
 
 ## Submitting your edits and/or additions
-This can be done through [github pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Clone the repository, make your changes, then submit a pull request. The pull request will be reviewed by several members of the RENC before it is merged.
+This can be done through [github pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Clone the repository, make your changes, then submit a pull request. The pull request will be reviewed by the ENC team before it is merged.
