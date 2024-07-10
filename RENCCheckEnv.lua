@@ -22,6 +22,7 @@ local function test(name, aliases, callback)
 			fails += 1
 			warn("⛔ " .. name .. " failed: Global was not not found")
 		elseif not callback then
+			passes += 1
 			print("⏺️ " .. name)
 		else
 			local success, message = pcall(callback)
