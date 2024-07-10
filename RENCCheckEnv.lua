@@ -873,6 +873,9 @@ test("WebSocket.connect", {}, function()
 	end
 	ws:Close()
 end)
+
+repeat task.wait() print(running) until running == 2
+	
 local rate = math.round(passes / (passes + fails) * 100)
 local outOf = passes .. " out of " .. (passes + fails)
 
