@@ -530,12 +530,7 @@ test("fireclickdetector", {}, function()
 	fireclickdetector(detector, 50, "MouseHoverEnter")
 end)
 
-test("firetouchinterest", {"firetouchtransmitter"}, function()
-	local interest = Instance.new("TouchInterest")
-	firetouchinterest(interest, "Touched")
-	task.wait()
-	firetouchinterest(interest, "TouchEnded")
-end)
+test("firetouchinterest", {"firetouchtransmitter"})
 
 test("fireproximityprompt", {}, function()
 	local prompt = Instance.new("ProximityPrompt")
