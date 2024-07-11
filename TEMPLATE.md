@@ -1,24 +1,40 @@
-## getdevice
+## FunctionName
 
-Eeturns the user's platform, allowing for easier optimisation of scripts for certain platforms.
+`⏰ Yields` `🌎 Global` `🪲 Inconsistent` `🔎 Needs Investigation` `📌 Custom Tag`
 
-> ### 🔎 Notes
-> This can be spoofed with Hookmetamethod.
-> Some platforms not commonly used for exploiting will return Unknown.
+```lua
+function FunctionName(param: string): ()
+```
+
+Describe the function in a neat and concise manner.
+
+May include multiple lines, paragraphs, or info cards.
+
+> ### 🔎 Notes, tips, info
+> Additional information or URLs.
+
+> ### ⚠️ Warnings, risks
+> Exercise caution.
+
+> ### ⛔ Danger!
+> Avoid making this mistake.
+
+> ### 🪲 Bugs, issues
+> Document known issues.
+
+### Parameters
+
+ * `param` - The parameter description.
 
 ### Aliases
 
- * `getplatform`
- * `getos`
+ * `functionAlias`
+ * `badAlias` - Optional justification.
 
 ### Example
 
+A description of the example that follows.
+
 ```lua
-if getdevice() == "Windows" or getdevice() == "Windows (Microsoft Store)" or getdevice() == "macOS" then
-  print("Player is using a computer")
-elseif getdevice() == "iOS" or getdevice() == "Android" then
-  print("Player is on mobile")
-else
-  print("Unknown device. Player is most likely spoofing their device")
-end
+print(FunctionName()) --> (void)
 ```
