@@ -29,6 +29,89 @@ fireclickdetector(clickDetector, 10 + math.random(), "MouseClick")
 
 ---
 
+## firetouchinterest
+
+```lua
+function firetouchinterest(object: TouchInterest, event: string?): ()
+```
+
+Dispatches a touched or stopped touching event to the given TouchInterest. When absent, `event` defaults to "Touched".
+
+Possible input events include 'Touched' and 'TouchEnded'.
+
+### Aliases   
+
+ * `firetouchtransmitter`   
+
+### Parameters
+
+ * `object` - The TouchInterest to dispatch to.
+ * `event` - Optional event to fire.
+
+### Example
+
+```lua
+local touchInterest = workspace.Door.Hitbox.TouchInterest
+firetouchinterest(touchInterest, "Touched")
+task.wait(.5)
+firetouchinterest(touchInterest, "TouchEnded")
+```
+
+---
+
+## fireproximityprompt
+
+```lua
+function fireproximityprompt(object: ProximityPrompt, event: string?): ()
+```
+
+Dispatches a triggered or stopped triggering event to the given ProximityPrompt. When absent, `event` defaults to "Triggered".
+
+Possible input events include 'Triggered' and 'TriggerEnded'.
+
+### Parameters
+
+ * `object` - The ProximityPrompt to dispatch to.
+ * `event` - Optional event to fire.
+
+### Example
+
+```lua
+local proximityPrompt = workspace.Door.Button.ProximityPrompt
+fireproximityprompt(proximityPrompt, "Triggered")
+task.wait(.5)
+fireproximityprompt(proximityPrompt, "TriggerEnded")
+```
+
+---
+
+## firesignal
+
+`🪲 Compatibility`
+
+```lua
+function firesignal(object: Instance, event: string?): ()
+```
+
+Dispatches an event to the given Instance. When absent, `event` defaults to "MouseButton1Click".
+
+> ### 🪲 Known Issues
+> Some executors don't have the event parameter and use Instance.event instead.
+
+### Parameters
+
+ * `object` - The Instance to dispatch to.
+ * `event` - Optional event to fire.
+
+### Example
+
+```lua
+local button = getplayer().PlayerGui.Main.TopBar.Claim
+firesignal(button, "MouseButton1Click")
+```
+
+---
+
 ## getcallbackvalue
 
 ```lua

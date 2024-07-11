@@ -220,30 +220,6 @@ cleardrawcache()
 
 ---
 
-## getrenderproperty
-
-`🌎 Global`
-
-```lua
-function getrenderproperty(drawing: Drawing, property: string): any
-```
-
-Gets the value of a property of a drawing. Functionally identical to `drawing[property]`.
-
-### Parameters
-
- * `drawing` - The drawing to get the property of.
- * `property` - The property to get.
-
-### Example
-
-```lua
-local circle = Drawing.new("Circle")
-getrenderproperty(circle, "Color")
-```
-
----
-
 ## isrenderobj
 
 `🌎 Global`
@@ -263,29 +239,4 @@ Returns whether the given object is a valid Drawing.
 ```lua
 print(isrenderobj(Drawing.new("Circle"))) --> true
 print(isrenderobj({})) --> false
-```
-
----
-
-## setrenderproperty
-
-`🌎 Global`
-
-```lua
-function setrenderproperty(drawing: Drawing, property: string, value: any): ()
-```
-
-Sets the value of a property of a drawing. Functionally identical to `drawing[property] = value`.
-
-### Parameters
-
- * `drawing` - The drawing to set the property of.
- * `property` - The property to set.
- * `value` - The value to set the property to.
-
-### Example
-
-```lua
-local circle = Drawing.new("Circle")
-setrenderproperty(circle, "Color", Color3.fromRGB(255, 0, 0))
 ```

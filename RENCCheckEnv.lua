@@ -531,6 +531,24 @@ test("fireclickdetector", {}, function()
 	fireclickdetector(detector, 50, "MouseHoverEnter")
 end)
 
+test("firetouchinterest", {"firetouchtransmitter"}, function()
+	local interest = Instance.new("TouchInterest")
+	firerouchinterest(interest, "Touched")
+	task.wait()
+	firerouchinterest(interest, "TouchEnded")
+end)
+
+test("fireproximityprompt", {}, function()
+	local prompt = Instance.new("ProximityPrompt")
+	fireproximityprompt(prompt, "Triggered")
+	fireproximityprompt(prompt, "TriggerEnded")
+end)
+
+test("firesignal", {}, function()
+	local button = Instance.new("TextButton")
+	firesignal(button, "MouseButton1Click")
+end)
+
 test("getcallbackvalue", {}, function()
 	local bindable = Instance.new("BindableFunction")
 	local function test()
@@ -705,7 +723,7 @@ test("queue_on_teleport", {"queueonteleport"})
 
 test("request", {"http.request", "http_request"}, function()
 	local response = request({
-		Url = "https://httpbin.org/user-agent",
+		Url = "http://httpbin.org/user-agent",
 		Method = "GET",
 	})
 	assert(type(response) == "table", "Response must be a table")
@@ -858,25 +876,6 @@ test("isrenderobj", {}, function()
 	drawing.Visible = true
 	assert(isrenderobj(drawing) == true, "Did not return true for an Image")
 	assert(isrenderobj(newproxy()) == false, "Did not return false for a blank table")
-end)
-
-test("getrenderproperty", {}, function()
-	local drawing = Drawing.new("Image")
-	drawing.Visible = true
-	assert(type(getrenderproperty(drawing, "Visible")) == "boolean", "Did not return a boolean value for Image.Visible")
-	local success, result = pcall(function()
-		return getrenderproperty(drawing, "Color")
-	end)
-	if not success or not result then
-		return "Image.Color is not supported"
-	end
-end)
-
-test("setrenderproperty", {}, function()
-	local drawing = Drawing.new("Square")
-	drawing.Visible = true
-	setrenderproperty(drawing, "Visible", false)
-	assert(drawing.Visible == false, "Did not set the value for Square.Visible")
 end)
 
 test("cleardrawcache", {}, function()
