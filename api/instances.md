@@ -90,7 +90,7 @@ fireproximityprompt(proximityPrompt, "TriggerEnded")
 `🪲 Compatibility`
 
 ```lua
-function firesignal(object: Instance, event: string?): ()
+function firesignal(object: Instance, event: string?, args: any?): ()
 ```
 
 Dispatches an event to the given Instance. When absent, `event` defaults to "MouseButton1Click".
@@ -102,6 +102,7 @@ Dispatches an event to the given Instance. When absent, `event` defaults to "Mou
 
  * `object` - The Instance to dispatch to.
  * `event` - Optional event to fire.
+ * `args` - Optional args for event.
 
 ### Example
 
