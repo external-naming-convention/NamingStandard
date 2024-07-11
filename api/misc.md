@@ -322,7 +322,7 @@ print(getping(true).." ping")
 
 ## getdevice
 
-Eeturns the user's platform, allowing for easier optimisation of scripts for certain platforms.
+Returns the user's platform, allowing for easier optimisation of scripts for certain platforms.
 
 > ### 🔎 Notes   
 > This can be spoofed with Hookmetamethod.   
