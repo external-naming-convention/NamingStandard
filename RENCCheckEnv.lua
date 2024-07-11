@@ -533,9 +533,9 @@ end)
 
 test("firetouchinterest", {"firetouchtransmitter"}, function()
 	local interest = Instance.new("TouchInterest")
-	firerouchinterest(interest, "Touched")
+	firetouchinterest(interest, "Touched")
 	task.wait()
-	firerouchinterest(interest, "TouchEnded")
+	firetouchinterest(interest, "TouchEnded")
 end)
 
 test("fireproximityprompt", {}, function()
