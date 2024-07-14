@@ -341,6 +341,6 @@ if getdevice() == "Windows" or getdevice() == "Windows (Microsoft Store)" or get
 elseif getdevice() == "iOS" or getdevice() == "Android" then
   print("Player is on mobile")
 else
-  print("Unknown device. Player is most likely spoofing their device")
+  print("Unknown device. Player is likely spoofing their device")
 end
 ```
