@@ -540,7 +540,7 @@ end)
 
 test("firesignal", {}, function()
 	local button = Instance.new("TextButton")
-	assert(not firesignal(button.MouseButton1Click), "Uses old standard")
+	assert(firesignal(button.MouseButton1Click), "Uses old standard")
 	firesignal(button, "MouseButton1Click")
 end)
 
