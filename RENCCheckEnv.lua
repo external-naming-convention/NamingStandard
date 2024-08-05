@@ -1,4 +1,4 @@
-local version, properties, imageId = "v2.0.0", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
+local version, properties, imageId = "v2.1.0", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
 local githubVersion = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.github.com/repos/external-naming-convention/RobloxNamingStandard/releases"))[1].tag_name
 
 if githubVersion == version then
@@ -748,33 +748,36 @@ end)
 test("setclipboard", {"toclipboard"})
 
 test("setfpscap", {}, function()
-	local function localgetfps() -- credits: https://devforum.roblox.com/t/get-client-fps-trough-a-script/282631/14
-		local RunService = game:GetService("RunService")
-		local FPS = 0
-		local TimeFunction = RunService:IsRunning() and time or os.clock
+	if not getfps then 
+		local function getfps() -- credits: https://devforum.roblox.com/t/get-client-fps-trough-a-script/282631/14
+			local RunService = game:GetService("RunService")
+			local FPS: number
+			local TimeFunction = RunService:IsRunning() and time or os.clock
 
-		local LastIteration, Start
-		local FrameUpdateTable = {}
+			local LastIteration: number, Start: number
+			local FrameUpdateTable = {}
 
-		local function HeartbeatUpdate()
-			LastIteration = TimeFunction()
-			for Index = #FrameUpdateTable, 1, -1 do
-				FrameUpdateTable[Index + 1] = FrameUpdateTable[Index] >= LastIteration - 1 and FrameUpdateTable[Index] or nil
+			local function HeartbeatUpdate()
+				LastIteration = TimeFunction()
+				for Index = #FrameUpdateTable, 1, -1 do
+					FrameUpdateTable[Index + 1] = FrameUpdateTable[Index] >= LastIteration - 1 and FrameUpdateTable[Index] or nil
+				end
+
+				FrameUpdateTable[1] = LastIteration
+				FPS = TimeFunction() - Start >= 1 and #FrameUpdateTable or #FrameUpdateTable / (TimeFunction() - Start)
 			end
 
-			FrameUpdateTable[1] = LastIteration
-			FPS = TimeFunction() - Start >= 1 and #FrameUpdateTable or #FrameUpdateTable / (TimeFunction() - Start)
+			Start = TimeFunction()
+			RunService.Heartbeat:Connect(HeartbeatUpdate)
+			task.wait(1.1)
+			return FPS
 		end
-
-		Start = TimeFunction()
-		RunService.Heartbeat:Connect(HeartbeatUpdate)
-		return math.round(getfps() or FPS)
 	end
 
 	setfpscap(60)
-	local fps60 = localgetfps()
+	local fps60 = getfps()
 	setfpscap(0)
-	local fps0 = localgetfps()
+	local fps0 = getfps()
 	return fps60 .. "fps @60 • " .. fps0 .. "fps @0"
 end)
 
@@ -783,10 +786,10 @@ test("customprint", {})
 test("getfps", {}, function(gf)
 	local function localgetfps() -- credits: https://devforum.roblox.com/t/get-client-fps-trough-a-script/282631/14
 		local RunService = game:GetService("RunService")
-		local FPS = 0
+		local FPS: number
 		local TimeFunction = RunService:IsRunning() and time or os.clock
 
-		local LastIteration, Start
+		local LastIteration: number, Start: number
 		local FrameUpdateTable = {}
 
 		local function HeartbeatUpdate()
@@ -801,8 +804,10 @@ test("getfps", {}, function(gf)
 
 		Start = TimeFunction()
 		RunService.Heartbeat:Connect(HeartbeatUpdate)
-		return math.round(getfps() or FPS)
+		task.wait(1.1)
+		return FPS
 	end
+
 	local rf = localgetfps()
 	local rgf = math.round(gf())
 	assert(rf == rgf, ("Did not return correct fps. getfps: %d, fps: %d"):format(rgf, rf)) -- math.round due to executors being able to choose how many decimal points they want. (if any)
@@ -823,6 +828,8 @@ test("getdevice", {"getplatform", "getos"}, function(gd)
 	assert(gd() == luauGetDevice(), ("Did not return correct platform. getdevice: %s, luauGetDevice: %s"):format(getdevice(), luauGetDevice()))
 	return gd()
 end)
+
+test("join", {"joingame", "joinserver"})
 
 -- Scripts
 

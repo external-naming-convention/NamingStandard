@@ -314,6 +314,10 @@ print(tostring(getping()).."ms ping")
 
 ## getdevice
 
+```lua
+function getdevice(): string
+```
+
 Returns the user's platform, allowing for easier optimisation of scripts for certain platforms.
 
 > ### 🔎 Notes   
@@ -334,4 +338,28 @@ elseif getdevice() == "IOS" or getdevice() == "Android" then
 else
   print("Unknown device. Player is likely spoofing their device")
 end
+```
+
+---
+
+## join
+
+```lua
+function join(PlaceId: number, JobId: string?): ()
+```
+
+Joins specified game or server.
+
+### Aliases
+
+ * `joingame`
+ * `joinserver`
+
+### Example
+
+```lua
+local function rejoin()
+	join(game.PlaceId, game.JobId)
+end
+rejoin()
 ```
