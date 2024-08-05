@@ -275,23 +275,19 @@ customprint("Successful", {TextColor3 = Color3.fromRGB(0, 255, 0)}, "rbxasset://
 ## getfps
 
 ```lua
-function getfps(suffix: boolean): string
+function getfps(): number
 ```
 
-Gets the current player's fps, and adds " fps" to the end if suffix is true.
+Gets the current player's fps as a number.
 
 > ### 🔎 Note
-> The ping is rounded(math.round in Lua), so you won't get the exact fps.
-
-### Parameters
-
- * `suffix` - Whether or not to add " fps" to the end.
+> The fps is sometimes rounded(math.round in Lua), so you won't always get the exact fps.
 
 ### Example
 
 ```lua
-print(tostring(tonumber(getfps())*60).." fpm")
-print(getping(true))
+print(tostring(getfps()*60).." fpm")
+print(tostring(getfps()).." fps")
 ```
 
 ---
@@ -299,23 +295,19 @@ print(getping(true))
 ## getping
 
 ```lua
-function getping(suffix: boolean): string
+function getping(): number
 ```
 
-Gets the current player's ping, and adds " ms" to the end if suffix is true.
+Gets the current player's ping as a number.
 
 > ### 🔎 Note
-> The ping is rounded(math.round in Lua), so you won't get the exact ping.
-
-### Parameters
-
- * `suffix` - Whether or not to add " ms" to the end.
+> The ping is sometimes rounded(math.round in Lua), so you sometimes won't get the exact ping.
 
 ### Example
 
 ```lua
-print(tostring(tonumber(getping())/1000).."s ping")
-print(getping(true).." ping")
+print(tostring(getping()/1000).."s ping")
+print(tostring(getping()).."ms ping")
 ```
 
 ---
@@ -326,7 +318,6 @@ Returns the user's platform, allowing for easier optimisation of scripts for cer
 
 > ### 🔎 Notes   
 > This can be spoofed with Hookmetamethod.   
-> Some platforms not commonly used for exploiting will return Unknown.   
 
 ### Aliases
 
@@ -336,10 +327,10 @@ Returns the user's platform, allowing for easier optimisation of scripts for cer
 ### Example
 
 ```lua
-if getdevice() == "Windows" or getdevice() == "Windows (Microsoft Store)" or getdevice() == "macOS" then
-  print("Player is using a computer")
-elseif getdevice() == "iOS" or getdevice() == "Android" then
-  print("Player is on mobile")
+if getdevice() == "Windows" or getdevice() == "UWP" or getdevice() == "OSX" then
+  print("Player is likely using a computer")
+elseif getdevice() == "IOS" or getdevice() == "Android" then
+  print("Player is likely on mobile")
 else
   print("Unknown device. Player is likely spoofing their device")
 end

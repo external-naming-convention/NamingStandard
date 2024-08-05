@@ -1,3 +1,16 @@
+local version, properties, imageId = "v2.0.0", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
+local githubVersion = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.github.com/repos/external-naming-convention/RobloxNamingStandard/releases"))[1].tag_name
+
+if githubVersion == version then
+	version = "Your RENCCheckEnv.lua is up to date!"
+elseif version:split(".")[1] ~= githubVersion:split(".")[1] or version:split(".")[2] ~= githubVersion:split(".")[2] then
+	version, properties, imageId = ("New version of RENCCheckEnv.lua available, your current version: %s, new version: %s"):format(version, githubVersion), {TextColor3 = Color3.fromRGB(215, 90, 74)}, "rbxasset://textures/DevConsole/Error.png"
+else
+	version, properties, imageId = ("New minor version of RENCCheckEnv.lua available, your current version: %s, new version: %s"):format(version, githubVersion), {TextColor3 = Color3.fromRGB(255, 218, 68)}, "rbxasset://textures/DevConsole/Warning.png"
+end
+
+
+
 local passes, fails, undefined = 0, 0, 0
 local running = 0
 
@@ -24,7 +37,7 @@ local function test(name, aliases, callback)
 			passes += 1
 			print("⏺️ " .. name)
 		else
-			local success, message = pcall(callback)
+			local success, message = pcall(callback, getgenv()[name])
 	
 			if success then
 				passes += 1
@@ -71,6 +84,10 @@ task.defer(function()
 	print("✅ Tested with a " .. rate .. "% success rate (" .. outOf .. ")")
 	print("⛔ " .. fails .. " tests failed")
 	print("⚠️ " .. undefined .. " globals are missing aliases")
+	local customprint = customprint or function(str: string, ...)
+        print(str)
+    end
+	customprint(version, properties, imageId)
 end)
 
 -- Cache
@@ -731,42 +748,80 @@ end)
 test("setclipboard", {"toclipboard"})
 
 test("setfpscap", {}, function()
-    local function getfps()
-        local rawfps = game:GetService("Stats").Workspace.Heartbeat:GetValue()
-        local fpsnum = tonumber(rawfps)
-        local fps = math.round(fpsnum)
-        return tostring(fps)
+	local function localgetfps() -- credits: https://devforum.roblox.com/t/get-client-fps-trough-a-script/282631/14
+		local RunService = game:GetService("RunService")
+		local FPS = 0
+		local TimeFunction = RunService:IsRunning() and time or os.clock
+
+		local LastIteration, Start
+		local FrameUpdateTable = {}
+
+		local function HeartbeatUpdate()
+			LastIteration = TimeFunction()
+			for Index = #FrameUpdateTable, 1, -1 do
+				FrameUpdateTable[Index + 1] = FrameUpdateTable[Index] >= LastIteration - 1 and FrameUpdateTable[Index] or nil
+			end
+
+			FrameUpdateTable[1] = LastIteration
+			FPS = TimeFunction() - Start >= 1 and #FrameUpdateTable or #FrameUpdateTable / (TimeFunction() - Start)
+		end
+
+		Start = TimeFunction()
+		RunService.Heartbeat:Connect(HeartbeatUpdate)
+		return math.round(getfps() or FPS)
 	end
+
 	setfpscap(60)
-	local fps60 = getfps()
+	local fps60 = localgetfps()
 	setfpscap(0)
-	local fps0 = getfps()
+	local fps0 = localgetfps()
 	return fps60 .. "fps @60 • " .. fps0 .. "fps @0"
 end)
 
 test("customprint", {})
 
-test("getfps", {})
+test("getfps", {}, function(gf)
+	local function localgetfps() -- credits: https://devforum.roblox.com/t/get-client-fps-trough-a-script/282631/14
+		local RunService = game:GetService("RunService")
+		local FPS = 0
+		local TimeFunction = RunService:IsRunning() and time or os.clock
 
-test("getping", {})
+		local LastIteration, Start
+		local FrameUpdateTable = {}
 
-test("getdevice", {"getplatform", "getos"}, function()
-	function luauGetDevice()
-		local inputsrv = game:GetService("UserInputService")
-			if inputsrv:GetPlatform() == Enum.Platform.Windows then
-				return 'Windows'
-			elseif inputsrv:GetPlatform() == Enum.Platform.OSX then
-				return 'macOS'
-			elseif inputsrv:GetPlatform() == Enum.Platform.IOS then
-				return 'iOS'
-			elseif inputsrv:GetPlatform() == Enum.Platform.UWP then
-				return 'Windows (Microsoft Store)'
-			elseif inputsrv:GetPlatform() == Enum.Platform.Android then
-				return 'Android'
-		else return 'Unknown'
+		local function HeartbeatUpdate()
+			LastIteration = TimeFunction()
+			for Index = #FrameUpdateTable, 1, -1 do
+				FrameUpdateTable[Index + 1] = FrameUpdateTable[Index] >= LastIteration - 1 and FrameUpdateTable[Index] or nil
+			end
+
+			FrameUpdateTable[1] = LastIteration
+			FPS = TimeFunction() - Start >= 1 and #FrameUpdateTable or #FrameUpdateTable / (TimeFunction() - Start)
 		end
+
+		Start = TimeFunction()
+		RunService.Heartbeat:Connect(HeartbeatUpdate)
+		return math.round(getfps() or FPS)
 	end
-	assert(getdevice() == luauGetDevice(), ("Did not return correct platform. getdevice: %s, luauGetDevice: %s"):format(getdevice(), luauGetDevice()))
+	local rf = localgetfps()
+	local rgf = math.round(gf())
+	assert(rf == rgf, ("Did not return correct fps. getfps: %d, fps: %d"):format(rgf, rf)) -- math.round due to executors being able to choose how many decimal points they want. (if any)
+	return rf
+end)
+
+test("getping", {}, function(gp)
+	local rp = math.round(game:GetService("Stats"):FindFirstChild("PerformanceStats").Ping:GetValue())
+	local rgp = math.round(gp())
+	assert(rp == rgp, ("Did not return correct ping. getping: %d, ping: %d"):format(rgp, rp)) -- math.round due to executors being able to choose how many decimal points they want. (if any)
+	return rp
+end)
+
+test("getdevice", {"getplatform", "getos"}, function(gd)
+	function luauGetDevice()
+		return tostring(game:GetService("UserInputService"):GetPlatform()):split(".")[3]
+	end
+	assert(gd() == luauGetDevice(), ("Did not return correct platform. getdevice: %s, luauGetDevice: %s"):format(getdevice(), luauGetDevice()))
+	return gd()
 end)
 
 -- Scripts
