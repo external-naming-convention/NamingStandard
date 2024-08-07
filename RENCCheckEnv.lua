@@ -1,12 +1,12 @@
-local version, properties, imageId = "v2.1.1", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
+local version, properties, imageId = "v2.1.2", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
 local githubVersion = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.github.com/repos/external-naming-convention/RobloxNamingStandard/releases"))[1].tag_name
 
 if githubVersion == version then
 	version = "Your RENCCheckEnv.lua is up to date!"
 elseif version:split(".")[1] ~= githubVersion:split(".")[1] or version:split(".")[2] ~= githubVersion:split(".")[2] then
-	version, properties, imageId = ("New version of RENCCheckEnv.lua available, your current version: %s, new version: %s"):format(version, githubVersion), {TextColor3 = Color3.fromRGB(215, 90, 74)}, "rbxasset://textures/DevConsole/Error.png"
+	version, properties, imageId = ("New version of RENCCheckEnv.lua available, your current version: %s, new version: %s. Use loadstring to stay up-to-date."):format(version, githubVersion), {TextColor3 = Color3.fromRGB(215, 90, 74)}, "rbxasset://textures/DevConsole/Error.png"
 else
-	version, properties, imageId = ("New minor version of RENCCheckEnv.lua available, your current version: %s, new version: %s"):format(version, githubVersion), {TextColor3 = Color3.fromRGB(255, 218, 68)}, "rbxasset://textures/DevConsole/Warning.png"
+	version, properties, imageId = ("New minor version of RENCCheckEnv.lua available, your current version: %s, new version: %s. Use loadstring to stay up-to-date."):format(version, githubVersion), {TextColor3 = Color3.fromRGB(255, 218, 68)}, "rbxasset://textures/DevConsole/Warning.png"
 end
 
 
