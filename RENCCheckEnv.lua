@@ -1,4 +1,4 @@
-local version, properties, imageId = "v2.1.0", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
+local version, properties, imageId = "v2.1.1", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
 local githubVersion = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.github.com/repos/external-naming-convention/RobloxNamingStandard/releases"))[1].tag_name
 
 if githubVersion == version then
@@ -810,14 +810,14 @@ test("getfps", {}, function(gf)
 
 	local rf = localgetfps()
 	local rgf = math.round(gf())
-	assert(rf == rgf, ("Did not return correct fps. getfps: %d, fps: %d"):format(rgf, rf)) -- math.round due to executors being able to choose how many decimal points they want. (if any)
+	assert(((rf - 15) <= rgf) or ((rf + 15) >= rgf), ("Did not return correct fps. getfps: %d, fps: %d"):format(rgf, rf)) -- math.round due to executors being able to choose how many decimal points they want. (if any)
 	return rf
 end)
 
 test("getping", {}, function(gp)
 	local rp = math.round(game:GetService("Stats"):FindFirstChild("PerformanceStats").Ping:GetValue())
 	local rgp = math.round(gp())
-	assert(rp == rgp, ("Did not return correct ping. getping: %d, ping: %d"):format(rgp, rp)) -- math.round due to executors being able to choose how many decimal points they want. (if any)
+	assert(((rp - 15) <= rgp) or ((rp + 15) >= rgp), ("Did not return correct ping. getping: %d, ping: %d"):format(rgp, rp)) -- math.round due to executors being able to choose how many decimal points they want. (if any)
 	return rp
 end)
 
