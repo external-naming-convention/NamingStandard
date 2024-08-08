@@ -32,19 +32,19 @@ local function test(name, aliases, callback)
 	task.spawn(function()
         if not getGlobal(name) then
 			fails += 1
-			warn(" " .. name .. " failed: Global was not not found")
+			warn("⛔ " .. name .. " failed: Global was not not found")
 		elseif not callback then
 			passes += 1
-			print(" " .. name)
+			print("⏺️ " .. name)
 		else
 			local success, message = pcall(callback, getgenv()[name])
 	
 			if success then
 				passes += 1
-				print(" " .. name .. (message and " • " .. message or ""))
+				print("✅ " .. name .. (message and " • " .. message or ""))
 			else
 				fails += 1
-				warn(" " .. name .. " failed: " .. message)
+				warn("⛔ " .. name .. " failed: " .. message)
 			end
 		end
 	
@@ -58,7 +58,7 @@ local function test(name, aliases, callback)
 	
 		if #undefinedAliases > 0 then
 			undefined += 1
-			warn(" " .. table.concat(undefinedAliases, ", "))
+			warn("⚠️ " .. table.concat(undefinedAliases, ", "))
 		end
 
 		running -= 1
