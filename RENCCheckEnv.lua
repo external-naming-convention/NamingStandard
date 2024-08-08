@@ -1,4 +1,4 @@
-local version, properties, imageId = "v2.2.0", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
+local version, properties, imageId = "v2.2.1", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
 local githubVersion = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.github.com/repos/external-naming-convention/RobloxNamingStandard/releases"))[1].tag_name
 
 if githubVersion == version then
@@ -32,19 +32,19 @@ local function test(name, aliases, callback)
 	task.spawn(function()
         if not getGlobal(name) then
 			fails += 1
-			warn("⛔ " .. name .. " failed: Global was not not found")
+			warn(" " .. name .. " failed: Global was not not found")
 		elseif not callback then
 			passes += 1
-			print("⏺️ " .. name)
+			print(" " .. name)
 		else
 			local success, message = pcall(callback, getgenv()[name])
 	
 			if success then
 				passes += 1
-				print("✅ " .. name .. (message and " • " .. message or ""))
+				print(" " .. name .. (message and " • " .. message or ""))
 			else
 				fails += 1
-				warn("⛔ " .. name .. " failed: " .. message)
+				warn(" " .. name .. " failed: " .. message)
 			end
 		end
 	
@@ -58,7 +58,7 @@ local function test(name, aliases, callback)
 	
 		if #undefinedAliases > 0 then
 			undefined += 1
-			warn("⚠️ " .. table.concat(undefinedAliases, ", "))
+			warn(" " .. table.concat(undefinedAliases, ", "))
 		end
 
 		running -= 1
@@ -557,7 +557,10 @@ end)
 
 test("firesignal", {}, function()
 	local button = Instance.new("TextButton")
-	assert(firesignal(button.MouseButton1Click), "Uses old standard")
+	local new = true
+	button.MouseButton1Click:Connect(function() new = false end) 
+	firesignal(button.MouseButton1Click)
+	assert(new, "Uses old standard")
 	firesignal(button, "MouseButton1Click")
 end)
 
