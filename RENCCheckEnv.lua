@@ -1,4 +1,4 @@
-local version, properties, imageId = "v2.1.2", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
+local version, properties, imageId = "v2.2.0", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
 local githubVersion = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.github.com/repos/external-naming-convention/RobloxNamingStandard/releases"))[1].tag_name
 
 if githubVersion == version then
@@ -551,8 +551,8 @@ test("firetouchinterest", {"firetouchtransmitter"})
 
 test("fireproximityprompt", {}, function()
 	local prompt = Instance.new("ProximityPrompt")
-	fireproximityprompt(prompt, "Triggered")
-	fireproximityprompt(prompt, "TriggerEnded")
+	fireproximityprompt(prompt)
+	fireproximityprompt(prompt, false)
 end)
 
 test("firesignal", {}, function()

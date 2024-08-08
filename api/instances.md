@@ -32,12 +32,10 @@ fireclickdetector(clickDetector, 10 + math.random(), "MouseClick")
 ## firetouchinterest
 
 ```lua
-function firetouchinterest(object: TouchInterest, event: string?): ()
+function firetouchinterest(part: Instance, touched: boolean?): ()
 ```
 
-Dispatches a touched or stopped touching event to the given TouchInterest. When absent, `event` defaults to "Touched".
-
-Possible input events include 'Touched' and 'TouchEnded'.
+Dispatches a touched or stopped touching event to the given TouchInterest. When absent, `touched` defaults to true.
 
 ### Aliases   
 
@@ -45,16 +43,16 @@ Possible input events include 'Touched' and 'TouchEnded'.
 
 ### Parameters
 
- * `object` - The TouchInterest to dispatch to.
- * `event` - Optional event to fire.
+ * `part` - The TouchInterest to dispatch to.
+ * `touched` - Optional event to fire.
 
 ### Example
 
 ```lua
-local touchInterest = workspace.Door.Hitbox.TouchInterest
-firetouchinterest(touchInterest, "Touched")
+local touchInterest = workspace.Door.Hitbox
+firetouchinterest(touchInterest)
 task.wait(.5)
-firetouchinterest(touchInterest, "TouchEnded")
+firetouchinterest(touchInterest, false)
 ```
 
 ---
@@ -62,25 +60,26 @@ firetouchinterest(touchInterest, "TouchEnded")
 ## fireproximityprompt
 
 ```lua
-function fireproximityprompt(object: ProximityPrompt, event: string?): ()
+function fireproximityprompt(prompt: ProximityPrompt, triggered: boolean?, hold: boolean?): ()
 ```
 
-Dispatches a triggered or stopped triggering event to the given ProximityPrompt. When absent, `event` defaults to "Triggered".
+Dispatches a triggered, stopped triggering, started holding or stopped holding event to the given ProximityPrompt. When absent, `triggered` defaults to true. When absent, `hold` defaults to true.
 
-Possible input events include 'Triggered' and 'TriggerEnded'.
+Possible events include 'Triggered', 'TriggerEnded', 'PromptButtonHoldBegan' and 'PromptButtonHoldEnded'.
 
 ### Parameters
 
- * `object` - The ProximityPrompt to dispatch to.
- * `event` - Optional event to fire.
+ * `prompt` - The ProximityPrompt to dispatch to.
+ * `triggered` - Optional event to fire.
+ * `hold` - Optional event to fire.
 
 ### Example
 
 ```lua
 local proximityPrompt = workspace.Door.Button.ProximityPrompt
-fireproximityprompt(proximityPrompt, "Triggered")
+fireproximityprompt(proximityPrompt)
 task.wait(.5)
-fireproximityprompt(proximityPrompt, "TriggerEnded")
+fireproximityprompt(proximityPrompt, false)
 ```
 
 ---
@@ -90,7 +89,7 @@ fireproximityprompt(proximityPrompt, "TriggerEnded")
 `🪲 Compatibility`
 
 ```lua
-function firesignal(object: Instance, event: string?, args: any?): ()
+function firesignal(object: Instance, signal: string?, args: any?): ()
 ```
 
 Dispatches an event to the given Instance. When absent, `event` defaults to "MouseButton1Click".
@@ -101,7 +100,7 @@ Dispatches an event to the given Instance. When absent, `event` defaults to "Mou
 ### Parameters
 
  * `object` - The Instance to dispatch to.
- * `event` - Optional event to fire.
+ * `signal` - Optional event to fire.
  * `args` - Optional args for event.
 
 ### Example
