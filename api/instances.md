@@ -415,7 +415,7 @@ getplayer():Kick("Coolio was too cool")
 ## getplayers
 
 ```lua
-function getplayers(): table
+function getplayers(): { [string]: Instance }
 ```
 
 Returns all players in current game.
