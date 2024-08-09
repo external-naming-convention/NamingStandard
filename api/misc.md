@@ -250,7 +250,7 @@ setfpscap(0) -- Unlocks the FPS cap
 `🪲 Compatibility`
 
 ```lua
-function customprint(text: string, properties: table, imageId: rbxasset): ()
+function customprint(text: string, properties: table, imageId: rbxasset?): ()
 ```
 
 Prints to the console with special options like setting the image, color & font.
