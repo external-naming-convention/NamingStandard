@@ -395,14 +395,14 @@ Set whether the given property is scriptable. Returns whether the property was s
 ## getplayer
 
 ```lua
-function getplayer(name: string): Instance
+function getplayer(name: string?): Instance
 ```
 
 Gets player from name, or LocalPlayer if no name is provided.
 
 ### Aliases   
 
- * `getlocalplayer`   
+ * `getlocalplayer` (sorta)   
 
 ### Example
 
@@ -440,7 +440,7 @@ print("There are currently "..tostring(playerAmount).." players in your lobby.")
 ## runanimation
 
 ```lua
-function runanimation(animationId, player: Instance): ()
+function runanimation(animationId, player: Instance?): ()
 ```
 
 Plays an animation on the chosen player.
