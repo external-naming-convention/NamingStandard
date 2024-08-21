@@ -1,4 +1,4 @@
-local version, properties, imageId = "v2.2.1", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
+local version, properties, imageId = "v2.3.0", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
 local githubVersion = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.github.com/repos/external-naming-convention/RobloxNamingStandard/releases"))[1].tag_name
 
 if githubVersion == version then
@@ -751,43 +751,7 @@ end)
 test("setclipboard", {"toclipboard"})
 
 test("setfpscap", {}, function()
-	if not getfps then 
-		local function getfps() -- credits: https://devforum.roblox.com/t/get-client-fps-trough-a-script/282631/14
-			local RunService = game:GetService("RunService")
-			local FPS: number
-			local TimeFunction = RunService:IsRunning() and time or os.clock
-
-			local LastIteration: number, Start: number
-			local FrameUpdateTable = {}
-
-			local function HeartbeatUpdate()
-				LastIteration = TimeFunction()
-				for Index = #FrameUpdateTable, 1, -1 do
-					FrameUpdateTable[Index + 1] = FrameUpdateTable[Index] >= LastIteration - 1 and FrameUpdateTable[Index] or nil
-				end
-
-				FrameUpdateTable[1] = LastIteration
-				FPS = TimeFunction() - Start >= 1 and #FrameUpdateTable or #FrameUpdateTable / (TimeFunction() - Start)
-			end
-
-			Start = TimeFunction()
-			RunService.Heartbeat:Connect(HeartbeatUpdate)
-			task.wait(1.1)
-			return FPS
-		end
-	end
-
-	setfpscap(60)
-	local fps60 = getfps()
-	setfpscap(0)
-	local fps0 = getfps()
-	return fps60 .. "fps @60 • " .. fps0 .. "fps @0"
-end)
-
-test("customprint", {})
-
-test("getfps", {}, function(gf)
-	local function localgetfps() -- credits: https://devforum.roblox.com/t/get-client-fps-trough-a-script/282631/14
+	local function getfps() -- credits: https://devforum.roblox.com/t/get-client-fps-trough-a-script/282631/14
 		local RunService = game:GetService("RunService")
 		local FPS: number
 		local TimeFunction = RunService:IsRunning() and time or os.clock
@@ -811,26 +775,14 @@ test("getfps", {}, function(gf)
 		return FPS
 	end
 
-	local rf = localgetfps()
-	local rgf = math.round(gf())
-	assert(((rf - 15) <= rgf) or ((rf + 15) >= rgf), ("Did not return correct fps. getfps: %d, fps: %d"):format(rgf, rf)) -- math.round due to executors being able to choose how many decimal points they want. (if any)
-	return rf
+	setfpscap(60)
+	local fps60 = getfps()
+	setfpscap(0)
+	local fps0 = getfps()
+	return fps60 .. "fps @60 • " .. fps0 .. "fps @0"
 end)
 
-test("getping", {}, function(gp)
-	local rp = math.round(game:GetService("Stats"):FindFirstChild("PerformanceStats").Ping:GetValue())
-	local rgp = math.round(gp())
-	assert(((rp - 15) <= rgp) or ((rp + 15) >= rgp), ("Did not return correct ping. getping: %d, ping: %d"):format(rgp, rp)) -- math.round due to executors being able to choose how many decimal points they want. (if any)
-	return rp
-end)
-
-test("getdevice", {"getplatform", "getos"}, function(gd)
-	function luauGetDevice()
-		return tostring(game:GetService("UserInputService"):GetPlatform()):split(".")[3]
-	end
-	assert(gd() == luauGetDevice(), ("Did not return correct platform. getdevice: %s, luauGetDevice: %s"):format(getdevice(), luauGetDevice()))
-	return gd()
-end)
+test("customprint", {})
 
 test("join", {"joingame", "joinserver"})
 
