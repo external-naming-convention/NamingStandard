@@ -1,12 +1,12 @@
-local version, properties, imageId = "v2.3.0", {TextColor3 = Color3.new(0, 1, 0)}, "rbxasset://textures/AudioDiscovery/done.png"
-local githubVersion = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.github.com/repos/external-naming-convention/RobloxNamingStandard/releases"))[1].tag_name
+local version = "v1.0.0"
+local githubVersion = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://api.github.com/repos/external-naming-convention/NamingStandard/releases"))[1].tag_name
 
 if githubVersion == version then
-	version = "Your RENCCheckEnv.lua is up to date!"
+	version = "Your ENCCheckEnv.lua is up to date!"
 elseif version:split(".")[1] ~= githubVersion:split(".")[1] or version:split(".")[2] ~= githubVersion:split(".")[2] then
-	version, properties, imageId = ("New version of RENCCheckEnv.lua available, your current version: %s, new version: %s. Use loadstring to stay up-to-date."):format(version, githubVersion), {TextColor3 = Color3.fromRGB(215, 90, 74)}, "rbxasset://textures/DevConsole/Error.png"
+	version = ("New version of ENCCheckEnv.lua available, your current version: %s, new version: %s. Use loadstring to stay up-to-date."):format(version, githubVersion)
 else
-	version, properties, imageId = ("New minor version of RENCCheckEnv.lua available, your current version: %s, new version: %s. Use loadstring to stay up-to-date."):format(version, githubVersion), {TextColor3 = Color3.fromRGB(255, 218, 68)}, "rbxasset://textures/DevConsole/Warning.png"
+	version = ("New minor version of ENCCheckEnv.lua available, your current version: %s, new version: %s. Use loadstring to stay up-to-date."):format(version, githubVersion)
 end
 
 
@@ -69,7 +69,7 @@ end
 
 print("\n")
 
-print("RENC Environment Check")
+print("ENC Environment Check")
 print("✅ - Pass, ⛔ - Fail, ⏺️ - No test, ⚠️ - Missing aliases\n")
 
 task.defer(function()
@@ -80,14 +80,12 @@ task.defer(function()
 
 	print("\n")
 
-	print("RENC Summary")
+	print("ENC Summary")
 	print("✅ Tested with a " .. rate .. "% success rate (" .. outOf .. ")")
 	print("⛔ " .. fails .. " tests failed")
 	print("⚠️ " .. undefined .. " globals are missing aliases")
-	local customprint = customprint or function(str: string, ...)
-        print(str)
-    end
-	customprint(version, properties, imageId)
+	
+	print(version)
 end)
 
 -- Cache
@@ -178,16 +176,6 @@ test("clonefunction", {}, function()
 	assert(test ~= copy, "The clone should not be equal to the original")
 end)
 
-test("getcallingscript", {})
-
-test("getscriptclosure", {"getscriptfunction"}, function()
-	local module = game:GetService("CoreGui").RobloxGui.Modules.Common.Constants
-	local constants = getrenv().require(module)
-	local generated = getscriptclosure(module)()
-	assert(constants ~= generated, "Generated module should not match the original")
-	assert(shallowEqual(constants, generated), "Generated constant table should be shallow equal to the original")
-end)
-
 test("hookfunction", {"replaceclosure"}, function()
 	local function test()
 		return true
@@ -214,7 +202,7 @@ test("isexecutorclosure", {"checkclosure", "isourclosure"}, function()
 	assert(isexecutorclosure(isexecutorclosure) == true, "Did not return true for an executor global")
 	assert(isexecutorclosure(newcclosure(function() end)) == true, "Did not return true for an executor C closure")
 	assert(isexecutorclosure(function() end) == true, "Did not return true for an executor Luau closure")
-	assert(isexecutorclosure(print) == false, "Did not return false for a Roblox global")
+	assert(isexecutorclosure(print) == false, "Did not return false for a Luau global")
 end)
 
 test("loadstring", {}, function()
@@ -238,17 +226,17 @@ end)
 
 -- Console
 
-test("rconsoleclear", {"consoleclear"})
+test("consoleclear", {})
 
-test("rconsolecreate", {"consolecreate"})
+test("consolecreate", {})
 
-test("rconsoledestroy", {"consoledestroy"})
+test("consoledestroy", {})
 
-test("rconsoleinput", {"consoleinput"})
+test("consoleinput", {})
 
-test("rconsoleprint", {"consoleprint"})
+test("consoleprint", {})
 
-test("rconsolesettitle", {"rconsolename", "consolesettitle"})
+test("consolesettitle", {"consolename"})
 
 -- Crypt
 
@@ -518,8 +506,8 @@ test("dofile", {})
 
 -- Input
 
-test("isrbxactive", {"isgameactive"}, function()
-	assert(type(isrbxactive()) == "boolean", "Did not return a boolean value")
+test("isgameactive", {}, function()
+	assert(type(isgameactive()) == "boolean", "Did not return a boolean value")
 end)
 
 test("mouse1click", {})
@@ -542,84 +530,6 @@ test("mousescroll", {})
 
 -- Instances
 
-test("fireclickdetector", {}, function()
-	local detector = Instance.new("ClickDetector")
-	fireclickdetector(detector, 50, "MouseHoverEnter")
-end)
-
-test("firetouchinterest", {"firetouchtransmitter"})
-
-test("fireproximityprompt", {}, function()
-	local prompt = Instance.new("ProximityPrompt")
-	fireproximityprompt(prompt)
-	fireproximityprompt(prompt, false)
-end)
-
-test("firesignal", {}, function()
-	local button = Instance.new("TextButton")
-	local new = true
-	button.MouseButton1Click:Connect(function() new = false end) 
-	firesignal(button.MouseButton1Click)
-	assert(new, "Uses old standard")
-	firesignal(button, "MouseButton1Click")
-end)
-
-test("getcallbackvalue", {}, function()
-	local bindable = Instance.new("BindableFunction")
-	local function test()
-	end
-	bindable.OnInvoke = test
-	assert(getcallbackvalue(bindable, "OnInvoke") == test, "Did not return the correct value")
-end)
-
-test("getconnections", {}, function()
-	local types = {
-		Enabled = "boolean",
-		ForeignState = "boolean",
-		LuaConnection = "boolean",
-		Function = "function",
-		Thread = "thread",
-		Fire = "function",
-		Defer = "function",
-		Disconnect = "function",
-		Disable = "function",
-		Enable = "function",
-	}
-	local bindable = Instance.new("BindableEvent")
-	bindable.Event:Connect(function() end)
-	local connection = getconnections(bindable.Event)[1]
-	for k, v in pairs(types) do
-		assert(connection[k] ~= nil, "Did not return a table with a '" .. k .. "' field")
-		assert(type(connection[k]) == v, "Did not return a table with " .. k .. " as a " .. v .. " (got " .. type(connection[k]) .. ")")
-	end
-end)
-
-test("getcustomasset", {}, function()
-	writefile(".tests/getcustomasset.txt", "success")
-	local contentId = getcustomasset(".tests/getcustomasset.txt")
-	assert(type(contentId) == "string", "Did not return a string")
-	assert(#contentId > 0, "Returned an empty string")
-	assert(string.match(contentId, "rbxasset://") == "rbxasset://", "Did not return an rbxasset url")
-end)
-
-test("gethiddenproperty", {}, function()
-	local fire = Instance.new("Fire")
-	local property, isHidden = gethiddenproperty(fire, "size_xml")
-	assert(property == 5, "Did not return the correct value")
-	assert(isHidden == true, "Did not return whether the property was hidden")
-end)
-
-test("sethiddenproperty", {}, function()
-	local fire = Instance.new("Fire")
-	local hidden = sethiddenproperty(fire, "size_xml", 10)
-	assert(hidden, "Did not return true for the hidden property")
-	assert(gethiddenproperty(fire, "size_xml") == 10, "Did not set the hidden property")
-end)
-
-test("gethui", {}, function()
-	assert(typeof(gethui()) == "Instance", "Did not return an Instance")
-end)
-
 test("getinstances", {}, function()
 	assert(getinstances()[1]:IsA("Instance"), "The first value is not an Instance")
 end)
@@ -629,23 +539,6 @@ test("getnilinstances", {}, function()
 	assert(getnilinstances()[1].Parent == nil, "The first value is not parented to nil")
 end)
 
-test("isscriptable", {}, function()
-	local fire = Instance.new("Fire")
-	assert(isscriptable(fire, "size_xml") == false, "Did not return false for a non-scriptable property (size_xml)")
-	assert(isscriptable(fire, "Size") == true, "Did not return true for a scriptable property (Size)")
-end)
-
-test("setscriptable", {}, function()
-	local fire = Instance.new("Fire")
-	local wasScriptable = setscriptable(fire, "size_xml", true)
-	assert(wasScriptable == false, "Did not return false for a non-scriptable property (size_xml)")
-	assert(isscriptable(fire, "size_xml") == true, "Did not set the scriptable property")
-	fire = Instance.new("Fire")
-	--assert(isscriptable(fire, "size_xml") == false, "⚠️⚠️ setscriptable persists between unique instances ⚠️⚠️") -- This persisting actually makes sense tho
-end)
-
-test("setrbxclipboard", {})
-
 test("getplayer", {"getlocalplayer"}, function()
 	assert(getplayer() == game:GetService("Players").LocalPlayer, "Did not return the expected player (LocalPlayer)")
 	assert(not getplayer("1x1x1x1"), "Returned a non-existing player")
@@ -654,60 +547,6 @@ end)
 test("getplayers", {}, function()
 	assert(getplayers()["LocalPlayer"] == game:GetService("Players").LocalPlayer, "Did not return the expected player (LocalPlayer)")
 	assert(not getplayers()["1x1x1x1"], "Returned a non-existing player")
-end)
-
-test("runanimation", {"playanimation"})
-
--- Metatable
-
-test("getrawmetatable", {}, function()
-	local metatable = { __metatable = "Locked!" }
-	local object = setmetatable({}, metatable)
-	assert(getrawmetatable(object) == metatable, "Did not return the metatable")
-end)
-
-test("hookmetamethod", {}, function()
-	local object = setmetatable({}, { __index = newcclosure(function() return false end), __metatable = "Locked!" })
-	local ref = hookmetamethod(object, "__index", function() return true end)
-	assert(object.test == true, "Failed to hook a metamethod and change the return value")
-	assert(ref() == false, "Did not return the original function")
-end)
-
-test("getnamecallmethod", {}, function()
-	local method
-	local ref
-	ref = hookmetamethod(game, "__namecall", function(...)
-		if not method then
-			method = getnamecallmethod()
-		end
-		return ref(...)
-	end)
-	game:GetService("Lighting")
-	assert(method == "GetService", "Did not get the correct method (GetService)")
-end)
-
-test("isreadonly", {}, function()
-	local object = {}
-	table.freeze(object)
-	assert(isreadonly(object), "Did not return true for a read-only table")
-end)
-
-test("setrawmetatable", {}, function()
-	local object = setmetatable({}, { __index = function() return false end, __metatable = "Locked!" })
-	local objectReturned = setrawmetatable(object, { __index = function() return true end })
-	assert(object, "Did not return the original object")
-	assert(object.test == true, "Failed to change the metatable")
-	if objectReturned then
-		return objectReturned == object and "Returned the original object" or "Did not return the original object"
-	end
-end)
-
-test("setreadonly", {}, function()
-	local object = { success = false }
-	table.freeze(object)
-	setreadonly(object, false)
-	object.success = true
-	assert(object.success, "Did not allow the table to be modified")
 end)
 
 -- Miscellaneous
@@ -734,8 +573,6 @@ end)
 
 test("messagebox", {})
 
-test("queue_on_teleport", {"queueonteleport"})
-
 test("request", {"http.request", "http_request"}, function()
 	local response = request({
 		Url = "http://httpbin.org/user-agent",
@@ -750,117 +587,14 @@ end)
 
 test("setclipboard", {"toclipboard"})
 
-test("setfpscap", {}, function()
-	local function getfps() -- credits: https://devforum.roblox.com/t/get-client-fps-trough-a-script/282631/14
-		local RunService = game:GetService("RunService")
-		local FPS: number
-		local TimeFunction = RunService:IsRunning() and time or os.clock
-
-		local LastIteration: number, Start: number
-		local FrameUpdateTable = {}
-
-		local function HeartbeatUpdate()
-			LastIteration = TimeFunction()
-			for Index = #FrameUpdateTable, 1, -1 do
-				FrameUpdateTable[Index + 1] = FrameUpdateTable[Index] >= LastIteration - 1 and FrameUpdateTable[Index] or nil
-			end
-
-			FrameUpdateTable[1] = LastIteration
-			FPS = TimeFunction() - Start >= 1 and #FrameUpdateTable or #FrameUpdateTable / (TimeFunction() - Start)
-		end
-
-		Start = TimeFunction()
-		RunService.Heartbeat:Connect(HeartbeatUpdate)
-		task.wait(1.1)
-		return FPS
-	end
-
-	setfpscap(60)
-	local fps60 = getfps()
-	setfpscap(0)
-	local fps0 = getfps()
-	return fps60 .. "fps @60 • " .. fps0 .. "fps @0"
-end)
-
-test("customprint", {})
-
 test("join", {"joingame", "joinserver"})
 
 -- Scripts
-
-test("getgc", {}, function()
-	local gc = getgc()
-	assert(type(gc) == "table", "Did not return a table")
-	assert(#gc > 0, "Did not return a table with any values")
-end)
 
 test("getgenv", {}, function()
 	getgenv().__TEST_GLOBAL = true
 	assert(__TEST_GLOBAL, "Failed to set a global variable")
 	getgenv().__TEST_GLOBAL = nil
-end)
-
-test("getloadedmodules", {}, function()
-	local modules = getloadedmodules()
-	assert(type(modules) == "table", "Did not return a table")
-	assert(#modules > 0, "Did not return a table with any values")
-	assert(typeof(modules[1]) == "Instance", "First value is not an Instance")
-	assert(modules[1]:IsA("ModuleScript"), "First value is not a ModuleScript")
-end)
-
-test("getrenv", {}, function()
-	assert(_G ~= getrenv()._G, "The variable _G in the executor is identical to _G in the game")
-end)
-
-test("getrunningscripts", {}, function()
-	local scripts = getrunningscripts()
-	assert(type(scripts) == "table", "Did not return a table")
-	assert(#scripts > 0, "Did not return a table with any values")
-	assert(typeof(scripts[1]) == "Instance", "First value is not an Instance")
-	assert(scripts[1]:IsA("ModuleScript") or scripts[1]:IsA("LocalScript"), "First value is not a ModuleScript or LocalScript")
-end)
-
-test("getscriptbytecode", {"dumpstring"}, function()
-	local animate = game:GetService("Players").LocalPlayer.Character.Animate
-	local bytecode = getscriptbytecode(animate)
-	assert(type(bytecode) == "string", "Did not return a string for Character.Animate (a " .. animate.ClassName .. ")")
-end)
-
-test("getscripthash", {}, function()
-	local animate = game:GetService("Players").LocalPlayer.Character.Animate:Clone()
-	local hash = getscripthash(animate)
-	local source = animate.Source
-	animate.Source = "print('Hello, world!')"
-	task.defer(function()
-		animate.Source = source
-	end)
-	local newHash = getscripthash(animate)
-	assert(hash ~= newHash, "Did not return a different hash for a modified script")
-	assert(newHash == getscripthash(animate), "Did not return the same hash for a script with the same source")
-end)
-
-test("getscripts", {}, function()
-	local scripts = getscripts()
-	assert(type(scripts) == "table", "Did not return a table")
-	assert(#scripts > 0, "Did not return a table with any values")
-	assert(typeof(scripts[1]) == "Instance", "First value is not an Instance")
-	assert(scripts[1]:IsA("ModuleScript") or scripts[1]:IsA("LocalScript"), "First value is not a ModuleScript or LocalScript")
-end)
-
-test("getsenv", {}, function()
-	local animate = game:GetService("Players").LocalPlayer.Character.Animate
-	local env = getsenv(animate)
-	assert(type(env) == "table", "Did not return a table for Character.Animate (a " .. animate.ClassName .. ")")
-	assert(env.script == animate, "The script global is not identical to Character.Animate")
-end)
-
-test("getthreadidentity", {"getidentity", "getthreadcontext"}, function()
-	assert(type(getthreadidentity()) == "number", "Did not return a number")
-end)
-
-test("setthreadidentity", {"setidentity", "setthreadcontext"}, function()
-	setthreadidentity(3)
-	assert(getthreadidentity() == 3, "Did not set the thread identity")
 end)
 
 -- Drawing

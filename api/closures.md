@@ -69,39 +69,6 @@ print(foo == bar) --> false
 
 ---
 
-## getcallingscript
-
-```lua
-function getcallingscript(): BaseScript
-```
-
-Returns the script responsible for the currently running function.
-
-### Example
-
-Prevent scripts in PlayerGui from invoking the `__namecall` hook:
-
-```lua
-local refs = {}
-local bannedScripts = game:GetService("Players").LocalPlayer.PlayerGui
-
-refs.__namecall = hookmetamethod(game, "__namecall", function(...)
-	local caller = getcallingscript()
-
-	-- Use '.' notation to call the IsDescendantOf method without invoking
-	-- __namecall and causing a recursive loop.
-	local isBanned = caller.IsDescendantOf(caller, bannedScripts)
-
-	if isBanned then
-		error("Not allowed to invoke __namecall")
-	end
-
-	return refs.__namecall(...)
-end)
-```
-
----
-
 ## hookfunction
 
 ```lua

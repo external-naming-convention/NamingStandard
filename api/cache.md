@@ -21,9 +21,9 @@ Deletes `object` from the Instance cache. Effectively invalidates `object` as a 
 ### Example
 
 ```lua
-local Lighting = game:GetService("Lighting")
-cache.invalidate(game:GetService("Lighting"))
-print(Lighting, Lighting == game:GetService("Lighting")) --> Lighting, false
+local HttpService = game:GetService("HttpService")
+cache.invalidate(game:GetService("HttpService"))
+print(HttpService, HttpService == game:GetService("HttpService")) --> HttpService, false
 ```
 
 ---
@@ -43,9 +43,9 @@ Checks whether `object` exists in the Instance cache.
 ### Example
 
 ```lua
-local Lighting = game:GetService("Lighting")
-cache.invalidate(Lighting)
-print(cache.iscached(Lighting)) --> false
+local HttpService = game:GetService("HttpService")
+cache.invalidate(HttpService)
+print(cache.iscached(HttpService)) --> false
 ```
 
 ---
@@ -66,12 +66,12 @@ Replaces `object` in the Instance cache with `newObject`.
 ### Example
 
 ```lua
-local Lighting = game:GetService("Lighting")
+local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 
-cache.replace(Lighting, Players)
+cache.replace(HttpService, Players)
 
-print(Lighting) --> Players
+print(HttpService) --> Players
 ```
 
 ---
@@ -93,10 +93,10 @@ Returns a copy of the Instance reference to `object`. This is useful for managin
 ### Example
 
 ```lua
-local Lighting = game:GetService("Lighting")
-local LightingClone = cloneref(Lighting)
+local HttpService = game:GetService("HttpService")
+local HttpServiceClone = cloneref(HttpService)
 
-print(Lighting == LightingClone) --> false
+print(HttpService == HttpServiceClone) --> false
 ```
 
 ---
@@ -119,9 +119,9 @@ Returns whether objects `a` and `b` both reference the same Instance.
 ### Example
 
 ```lua
-local Lighting = game:GetService("Lighting")
-local LightingClone = cloneref(Lighting)
+local HttpService = game:GetService("HttpService")
+local HttpServiceClone = cloneref(HttpService)
 
-print(Lighting == LightingClone) --> false
-print(compareinstances(Lighting, LightingClone)) --> true
+print(HttpService == HttpServiceClone) --> false
+print(compareinstances(HttpService, HttpServiceClone)) --> true
 ```

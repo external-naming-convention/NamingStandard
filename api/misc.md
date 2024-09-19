@@ -111,32 +111,6 @@ end
 
 ---
 
-## queue_on_teleport
-
-```lua
-function queue_on_teleport(code: string): ()
-```
-
-Queues the specified script to be executed after the player teleports to a different place.
-
-### Parameters
-
- * `code` - The script to execute.
-
-### Aliases
-
- * `queueonteleport` - Will supercede this function in the future.
-
-### Example
-
-```lua
-local source = game:GetObjects("rbxassetid://1234")[1].Source
-queue_on_teleport(source)
-loadstring(source)()
-```
-
----
-
 ## request
 
 `⏰ Yields`
@@ -225,57 +199,10 @@ setclipboard("CFrame.new(" .. table.concat(components, ", ") .. ")")
 
 ---
 
-## setfpscap
-
-```lua
-function setfpscap(fps: number): ()
-```
-
-Sets the in-game FPS cap to `fps`. If `fps` is 0, the FPS cap is disabled.
-
-### Parameters
-
- * `fps` - The FPS cap.
-
-### Example
-
-```lua
-setfpscap(0) -- Unlocks the FPS cap
-```
-
----
-
-## customprint
-
-`🪲 Compatibility`
-
-```lua
-function customprint(text: string, properties: table, imageId: rbxasset?): ()
-```
-
-Prints to the console with special options like setting the image, color & font.
-
-> ### 🪲 Known Issues
-> The console is in CoreGui only when open, this can cause problems if you dont fuck around in CoreScripts or whatever.
-
-### Parameters
-
- * `text` - Text to print.
- * `properties` - Properties for the TextLabel of the print.
- * `imageId` - The Image property for the ImageLabel of the print.
-
-### Example
-
-```lua
-customprint("Successful", {TextColor3 = Color3.fromRGB(0, 255, 0)}, "rbxasset://textures/AudioDiscovery/done.png")
-```
-
----
-
 ## join
 
 ```lua
-function join(PlaceId: number, JobId: string?): ()
+function join(JoinIdentifier: any): ()
 ```
 
 Joins specified game or server.
@@ -288,8 +215,9 @@ Joins specified game or server.
 ### Example
 
 ```lua
+-- Minecraft Example
 local function rejoin()
-	join(game.PlaceId, game.JobId)
+	join(game.IP)
 end
 rejoin()
 ```
